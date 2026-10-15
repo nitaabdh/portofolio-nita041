@@ -28,8 +28,11 @@ body{
   position:fixed;top:0;left:0;
   pointer-events:none;
   z-index:9999;
-  transition:transform 0.15s ease,background 0.3s;
-  mix-blend-mode:multiply;
+  opacity:0;
+  will-change:transform;
+  box-shadow:0 0 0 1.5px rgba(255,255,255,0.75),0 1px 6px rgba(14,144,200,0.35);
+  /* TIDAK ada transition di transform → titik langsung ikut kursor tanpa delay */
+  transition:scale 0.2s ease,background 0.25s,opacity 0.25s;
 }
 .cursor-ring{
   width:36px;height:36px;
@@ -38,8 +41,18 @@ body{
   position:fixed;top:0;left:0;
   pointer-events:none;
   z-index:9998;
-  transition:transform 0.35s cubic-bezier(.25,.46,.45,.94),opacity 0.3s;
-  opacity:0.5;
+  opacity:0;
+  will-change:transform;
+  transition:scale 0.25s ease,opacity 0.25s,border-color 0.25s;
+}
+.cursor.is-visible{opacity:1}
+.cursor-ring.is-visible{opacity:0.5}
+.cursor.is-hover{scale:2;background:rgba(91,157,181,0.9)}
+.cursor-ring.is-visible.is-hover{scale:1.5;opacity:0.9;border-color:rgba(91,157,181,0.7)}
+/* HP / tablet (layar sentuh): kursor custom dimatikan, kursor bawaan dipakai */
+@media (hover:none),(pointer:coarse){
+  .cursor,.cursor-ring{display:none}
+  *{cursor:auto !important}
 }
 
 /* ===== CSS VARIABLES – LIGHT (SIANG CERAH) ===== */
@@ -2406,6 +2419,8 @@ footer{padding:3rem 2rem}
 .tech-level.expert{background:rgba(140,184,122,.18);color:#5a9e3a}
 .tech-level.advanced{background:rgba(91,157,181,.18);color:#3a7a99}
 .tech-level.intermediate{background:rgba(192,132,90,.18);color:#a06040}
+.tech-level.beginner{background:rgba(150,150,170,.18);color:#6b7a8a}
+[data-theme="dark"] .tech-level.beginner{color:#a8b4c2}
 [data-theme="dark"] .tech-level.expert{color:#8cb87a}
 [data-theme="dark"] .tech-level.advanced{color:#7bb8d4}
 [data-theme="dark"] .tech-level.intermediate{color:#d4a06a}
@@ -2459,8 +2474,6 @@ nav:not(.nav-hidden){
   .hero-inner{max-width:1280px;gap:6rem}
   .hero-photo-wrap{width:360px;height:360px}
 }
-/* cursor hover feedback – done via JS already but ensure class applied */
-.cursor-hover .cursor{transform:scale(1.8)!important}
 /* ===== LOCKED ACCESS MODAL ===== */
 .locked-modal-backdrop{
   display:none;
@@ -3312,31 +3325,30 @@ nav:not(.nav-hidden){
         <div class="tech-carousel-wrap" id="techCarouselWrap">
           <div class="tech-row-wrap" style="margin-bottom:0">
             <div class="tech-cylinder" id="techRow1">
-              <!-- Data & Analytics -->
-              <div class="tech-card" data-cat="data" style="--tc:#4a90d9"><span class="tech-icon">🐍</span><span class="tech-name">Python</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="data" style="--tc:#f5a623"><span class="tech-icon">🐼</span><span class="tech-name">Pandas</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="data" style="--tc:#e8773a"><span class="tech-icon">📊</span><span class="tech-name">Tableau</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="data" style="--tc:#ffd700"><span class="tech-icon">📈</span><span class="tech-name">Power BI</span><span class="tech-level intermediate">Intermediate</span></div>
-              <div class="tech-card" data-cat="data" style="--tc:#3d9970"><span class="tech-icon">🧮</span><span class="tech-name">NumPy</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="data" style="--tc:#9b59b6"><span class="tech-icon">🤖</span><span class="tech-name">Scikit-learn</span><span class="tech-level intermediate">Intermediate</span></div>
               <!-- Web Dev -->
-              <div class="tech-card" data-cat="web" style="--tc:#e34c26"><span class="tech-icon">🌐</span><span class="tech-name">HTML5</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="web" style="--tc:#264de4"><span class="tech-icon">🎨</span><span class="tech-name">CSS3</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="web" style="--tc:#f0db4f"><span class="tech-icon">⚡</span><span class="tech-name">JavaScript</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="web" style="--tc:#ff2d20"><span class="tech-icon">🔴</span><span class="tech-name">Laravel</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="web" style="--tc:#7952b3"><span class="tech-icon">🅱️</span><span class="tech-name">Bootstrap</span><span class="tech-level expert">Expert</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#e34c26"><span class="tech-icon">🌐</span><span class="tech-name">HTML5</span><span class="tech-level advanced">Advanced</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#264de4"><span class="tech-icon">🎨</span><span class="tech-name">CSS3</span><span class="tech-level advanced">Advanced</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#f0db4f"><span class="tech-icon">⚡</span><span class="tech-name">JavaScript</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#61dafb"><span class="tech-icon">⚛️</span><span class="tech-name">React</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#3c873a"><span class="tech-icon">🟢</span><span class="tech-name">Node.js</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#777bb3"><span class="tech-icon">🐘</span><span class="tech-name">PHP</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="web" style="--tc:#7952b3"><span class="tech-icon">🅱️</span><span class="tech-name">Bootstrap</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="web,tools" style="--tc:#229ed9"><span class="tech-icon">🤖</span><span class="tech-name">Telegram Bot API</span><span class="tech-level intermediate">Intermediate</span></div>
               <!-- Database -->
-              <div class="tech-card" data-cat="db" style="--tc:#336791"><span class="tech-icon">🐘</span><span class="tech-name">PostgreSQL</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="db" style="--tc:#00758f"><span class="tech-icon">🐬</span><span class="tech-name">MySQL</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="db" style="--tc:#4db33d"><span class="tech-icon">🍃</span><span class="tech-name">MongoDB</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="db" style="--tc:#3ecf8e"><span class="tech-icon">⚡</span><span class="tech-name">Supabase</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="db" style="--tc:#336791"><span class="tech-icon">🐘</span><span class="tech-name">PostgreSQL</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="db" style="--tc:#00758f"><span class="tech-icon">🐬</span><span class="tech-name">MySQL</span><span class="tech-level intermediate">Intermediate</span></div>
+              <!-- Data & Analytics -->
+              <div class="tech-card" data-cat="data" style="--tc:#4a90d9"><span class="tech-icon">🐍</span><span class="tech-name">Python</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="data,tools" style="--tc:#217346"><span class="tech-icon">📗</span><span class="tech-name">Excel</span><span class="tech-level advanced">Advanced</span></div>
+              <div class="tech-card" data-cat="data" style="--tc:#f2c811"><span class="tech-icon">📈</span><span class="tech-name">Power BI</span><span class="tech-level beginner">Beginner</span></div>
               <!-- Tools -->
-              <div class="tech-card" data-cat="tools" style="--tc:#f34f29"><span class="tech-icon">🐙</span><span class="tech-name">Git & GitHub</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="tools" style="--tc:#2496ed"><span class="tech-icon">🐳</span><span class="tech-name">Docker</span><span class="tech-level intermediate">Intermediate</span></div>
-              <div class="tech-card" data-cat="tools" style="--tc:#4285f4"><span class="tech-icon">☁️</span><span class="tech-name">Google Cloud</span><span class="tech-level intermediate">Intermediate</span></div>
-              <div class="tech-card" data-cat="tools" style="--tc:#f37726"><span class="tech-icon">📓</span><span class="tech-name">Jupyter</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="tools" style="--tc:#f24e1e"><span class="tech-icon">🎨</span><span class="tech-name">Figma</span><span class="tech-level advanced">Advanced</span></div>
-              <div class="tech-card" data-cat="tools" style="--tc:#000000"><span class="tech-icon">📐</span><span class="tech-name">Notion</span><span class="tech-level expert">Expert</span></div>
-              <div class="tech-card" data-cat="data,tools" style="--tc:#217346"><span class="tech-icon">📗</span><span class="tech-name">Excel</span><span class="tech-level expert">Expert</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#f34f29"><span class="tech-icon">🐙</span><span class="tech-name">Git & GitHub</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#007acc"><span class="tech-icon">💻</span><span class="tech-name">VS Code</span><span class="tech-level advanced">Advanced</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#000000"><span class="tech-icon">▲</span><span class="tech-name">Vercel</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#f24e1e"><span class="tech-icon">🎨</span><span class="tech-name">Figma</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#f08705"><span class="tech-icon">📐</span><span class="tech-name">UML &amp; ERD</span><span class="tech-level intermediate">Intermediate</span></div>
+              <div class="tech-card" data-cat="tools" style="--tc:#ff6c37"><span class="tech-icon">📮</span><span class="tech-name">Postman</span><span class="tech-level beginner">Beginner</span></div>
             </div>
           </div>
         </div>
@@ -3752,35 +3764,56 @@ nav:not(.nav-hidden){
 </footer>
 
 <script>
-// ===== CURSOR =====
-const cursor=document.getElementById('cursor');
-const ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cursor.style.transform=`translate(${mx-6}px,${my-6}px)`;
-});
-function animateRing(){
-  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
-  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a,button,[class*="card"],[class*="tag"]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cursor.style.transform=`translate(${mx-6}px,${my-6}px) scale(2)`;
-    cursor.style.background='rgba(91,157,181,0.9)';
-    ring.style.transform=`translate(${rx-18}px,${ry-18}px) scale(1.5)`;
-    ring.style.opacity='0.9';
-    ring.style.borderColor='rgba(91,157,181,0.7)';
+// ===== CURSOR (ringan, tanpa delay) =====
+(function(){
+  const cursor=document.getElementById('cursor');
+  const ring=document.getElementById('cursorRing');
+  if(!cursor||!ring) return;
+  if(window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EASE=reduceMotion?1:0.3;   // makin besar = ring makin cepat menyusul
+  let mx=0,my=0,rx=0,ry=0,running=false,seen=false,hovering=false;
+
+  // Ring hanya dianimasikan saat masih bergerak, berhenti sendiri kalau sudah sampai
+  function renderRing(){
+    rx+=(mx-rx)*EASE; ry+=(my-ry)*EASE;
+    if(Math.abs(mx-rx)<0.1&&Math.abs(my-ry)<0.1){rx=mx;ry=my;running=false;}
+    ring.style.transform=`translate3d(${rx-18}px,${ry-18}px,0)`;
+    if(running) requestAnimationFrame(renderRing);
+  }
+
+  window.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch') return;
+    mx=e.clientX; my=e.clientY;
+    // titik langsung diposisikan di event yang sama = nol delay
+    cursor.style.transform=`translate3d(${mx-6}px,${my-6}px,0)`;
+    if(!seen){
+      seen=true; rx=mx; ry=my;
+      ring.style.transform=`translate3d(${rx-18}px,${ry-18}px,0)`;
+      cursor.classList.add('is-visible'); ring.classList.add('is-visible');
+    }
+    if(!running){running=true;requestAnimationFrame(renderRing);}
+  },{passive:true});
+
+  // Efek membesar saat di atas link / tombol / kartu (delegasi event, 1 listener saja)
+  const HOVER_SEL='a,button,[class*="card"],[class*="tag"]';
+  document.addEventListener('mouseover',e=>{
+    const on=!!(e.target.closest&&e.target.closest(HOVER_SEL));
+    if(on===hovering) return;
+    hovering=on;
+    cursor.classList.toggle('is-hover',on);
+    ring.classList.toggle('is-hover',on);
+  },{passive:true});
+
+  // Sembunyikan saat kursor keluar jendela browser
+  document.documentElement.addEventListener('mouseleave',()=>{
+    cursor.classList.remove('is-visible'); ring.classList.remove('is-visible');
   });
-  el.addEventListener('mouseleave',()=>{
-    cursor.style.background='#7bb8d4';
-    ring.style.opacity='0.5';
-    ring.style.borderColor='#7bb8d4';
-    ring.style.transform=`translate(${rx-18}px,${ry-18}px) scale(1)`;
+  document.documentElement.addEventListener('mouseenter',()=>{
+    if(seen){cursor.classList.add('is-visible'); ring.classList.add('is-visible');}
   });
-});
+})();
 
 // ===== STARS GENERATOR =====
 function generateStars(){
@@ -4717,8 +4750,9 @@ document.querySelectorAll('[loading="lazy"]').forEach(img=>{
     const r = wrapper.getBoundingClientRect();
     mouseX = e.clientX - r.left;
     mouseY = e.clientY - r.top;
-    if(!animId) drawSpotlight();
-  });
+    // gambar maksimal 1x per frame, dan hanya saat mouse bergerak
+    if(!animId) animId = requestAnimationFrame(drawSpotlight);
+  },{passive:true});
   wrapper.addEventListener('mouseleave',()=>{
     cancelAnimationFrame(animId); animId=null;
     const ctx = canvas.getContext('2d');
@@ -4726,6 +4760,7 @@ document.querySelectorAll('[loading="lazy"]').forEach(img=>{
   });
 
   function drawSpotlight(){
+    animId = null;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const isDark = document.documentElement.getAttribute('data-theme')==='dark';
@@ -4735,7 +4770,6 @@ document.querySelectorAll('[loading="lazy"]').forEach(img=>{
     grad.addColorStop(1, 'transparent');
     ctx.fillStyle = grad;
     ctx.fillRect(0,0,canvas.width,canvas.height);
-    animId = requestAnimationFrame(drawSpotlight);
   }
 })();
 

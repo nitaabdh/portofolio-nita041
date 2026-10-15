@@ -1,0 +1,250 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* COLOR SYSTEM (lebih premium) */
+:root {
+    --primary: #6366f1;
+    --secondary: #22c55e;
+    --accent: #f59e0b;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+}
+
+/* GLOBAL */
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+header {
+    padding: 3rem 1rem;
+    text-align: center;
+    background: radial-gradient(circle at top, #1e293b, #020617);
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+header p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+}
+
+/* NAV */
+nav {
+    margin-top: 1.5rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text);
+    margin: 0 0.6rem;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    left: 0;
+    bottom: -3px;
+    transition: width 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* =========================
+   MAIN
+========================= */
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 2rem 1rem;
+}
+
+section {
+    margin-bottom: 4rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    width: 40px;
+    height: 3px;
+    background: var(--primary);
+    display: block;
+    margin-top: 5px;
+}
+
+#tentang {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* FOTO */
+.foto-profile {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+article {
+    background: var(--card);
+    padding: 1.2rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+article:hover {
+    transform: translateY(-6px);
+    border-color: var(--primary);
+}
+
+ul {
+    list-style: none;
+}
+
+ul li {
+    background: var(--card);
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+    border-left: 4px solid var(--secondary);
+}
+
+#proyek {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+}
+
+/* judul h2 melebar penuh di grid */
+#proyek h2 {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+/* efek hover premium */
+#proyek article:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   FORM
+========================= */
+form {
+    background: var(--card);
+    padding: 1.2rem;
+    border-radius: 14px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 0.7rem;
+    margin-top: 0.4rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: transparent;
+    color: var(--text);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+button {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #4f46e5;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #020617;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+/* TABLET */
+@media (min-width: 640px) {
+    header h1 {
+        font-size: 2.3rem;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    /* tentang jadi 2 kolom */
+    #tentang {
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .foto-profile {
+        width: 300px;
+        height: 300px;
+        flex-shrink: 0;
+    }
+
+    #tentang > div {
+        flex: 2;
+    }
+
+    /* proyek jadi grid 3 kolom */
+    #proyek {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch; /* biar tinggi card sama */
+    }
+}

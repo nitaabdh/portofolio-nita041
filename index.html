@@ -4516,6 +4516,9 @@ document.querySelectorAll('[loading="lazy"]').forEach(img=>{
     if(collected.size === 4){
       setTimeout(()=> closeModal(), 400);
       setTimeout(()=> triggerAwakening(), 700);
+    } else {
+      // Pop-up otomatis tertutup setelah fragment terkumpul (tidak perlu klik ✕)
+      setTimeout(()=>{ if(currentFrag === fragKey) closeModal(); }, 600);
     }
   }
 
